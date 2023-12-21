@@ -18,11 +18,6 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     @yield('javascript')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#home").addClass("text-[#44B156] active");
-        })
-    </script>
 </body>
 
 </html>
