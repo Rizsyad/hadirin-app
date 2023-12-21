@@ -33,11 +33,11 @@ class ViewController extends Controller
 
     public function suratizin()
     {
-
+        return view('Page.suratizin');
     }
 
     public function pengajuancuti()
     {
-
+        return view('Page.pengajuancuti');
     }
 }

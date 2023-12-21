@@ -53,12 +53,12 @@
                      <span class="flex-auto mr-3 text-sm landscape:text-lg">Absen Pulang</span>
                      <i class='flex-auto bx bxs-home-smile text-3xl'></i>
                   </x-button-menu>
-                  <x-button-menu>
+                  <x-button-menu href="{{route('views.suratizin')}}">
                         <span class="flex-auto mr-3 text-sm landscape:text-lg">Surat Izin</span>
                         <i class="flex-auto fa-solid fa-clipboard text-2xl"></i>
                   </x-button-menu>
-                  <x-button-menu>
-                        <span class="flex-auto mr-3 text-sm landscape:text-lg">Surat Sakit</span>
+                  <x-button-menu href="{{route('views.pengajuancuti')}}">
+                        <span class="flex-auto mr-3 text-sm landscape:text-lg">Surat Cuti</span>
                         <i class="flex-auto fa-solid fa-clipboard text-2xl"></i>
                   </x-button-menu>
                 </div>
