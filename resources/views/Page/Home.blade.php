@@ -42,14 +42,15 @@
                     </div>
                 </div>
             </x-info-header>
+
             <div class="mt-20 w-11/12">
                 <p class="font-bold text-sm md:text-md">Menu Aktivitas</p>
                 <div class="grid grid-cols-2 gap-5">
-                  <x-button-menu>
+                  <x-button-menu href="{{route('views.absenmasuk')}}">
                      <span class="flex-auto mr-3 text-sm landscape:text-lg">Absen Masuk</span>
                      <i class='flex-auto bx bxs-user-check text-3xl'></i>                  
                   </x-button-menu>
-                  <x-button-menu>
+                  <x-button-menu href="{{route('views.absenpulang')}}">
                      <span class="flex-auto mr-3 text-sm landscape:text-lg">Absen Pulang</span>
                      <i class='flex-auto bx bxs-home-smile text-3xl'></i>
                   </x-button-menu>

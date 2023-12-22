@@ -27,8 +27,8 @@ Route::controller(ViewController::class)->prefix('views')->name('views.')->group
     Route::get('home', 'home')->name('home');
     Route::get('presensi', 'presensi')->name('presensi');
     Route::get('profile', 'profile')->name('profile');
-    Route::get('absenmasuk', 'absenmasuk')->name('absenmasuk');
-    Route::get('absenpulang', 'absenpulang')->name('absenpulang');
-    Route::get('suratizin', 'suratizin')->name('suratizin');
-    Route::get('pengajuancuti', 'pengajuancuti')->name('pengajuancuti');
+    Route::get('absen-masuk', 'absenmasuk')->name('absenmasuk');
+    Route::get('absen-pulang', 'absenpulang')->name('absenpulang');
+    Route::get('surat-izin', 'suratizin')->name('suratizin');
+    Route::get('pengajuan-cuti', 'pengajuancuti')->name('pengajuancuti');
 });

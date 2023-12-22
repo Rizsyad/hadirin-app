@@ -23,12 +23,12 @@ class ViewController extends Controller
 
     public function absenmasuk()
     {
-
+        return view('Page.absenmasuk');
     }
 
     public function absenpulang()
     {
-
+        return view('Page.absenpulang');
     }
 
     public function suratizin()

@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-   <x-header class="flex justify-center items-center">
+   <x-header class="flex justify-center items-center h-44">
       <img src="{{asset('assets/image/logo.png')}}" />
    </x-header>
 
