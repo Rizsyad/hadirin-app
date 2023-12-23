@@ -6,7 +6,8 @@
         "serve": "concurrently \"npm run dev\" \"php artisan serve\"",
         "servelanwin": "concurrently \"npm run dev -- --host\" \"php artisan serve --host=%npm_config_host\"",
         "servelanmac": "concurrently \"npm run dev -- --host\" \"php artisan serve --host=$npm_config_host\"",
-        "migrate": "php artisan migrate:refresh"
+        "migrate": "concurrently \"php artisan migrate:fresh\" \"php artisan migrate:refresh\"",
+        "clear": "concurrently \"php artisan cache:clear\" \"php artisan route:clear\" \"php artisan config:clear\" \"php artisan view:clear\""
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.7",

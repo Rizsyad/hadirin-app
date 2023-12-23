@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SuratCuti extends Model
+class Setting extends Model
 {
     use HasFactory;
 
@@ -15,10 +15,11 @@ class SuratCuti extends Model
      * @var array
      */
     protected $fillable = [
-        'keterangan',
-        'tanggal_awal',
-        'tanggal_akhir',
-        'user_id',
+        'jam_masuk',
+        'jam_keluar',
+        'lat',
+        'long',
+        'radius',
     ];
 
     /**
@@ -28,13 +29,7 @@ class SuratCuti extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'tanggal_awal' => 'date',
-        'tanggal_akhir' => 'date',
-        'user_id' => 'integer',
+        'lat' => 'decimal:6',
+        'long' => 'decimal:6',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

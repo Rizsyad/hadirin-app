@@ -63,6 +63,10 @@
                         <i class="flex-auto fa-solid fa-clipboard text-2xl"></i>
                   </x-button-menu>
                 </div>
+                <x-button-menu href="{{route('views.cekstatus')}}" class="mt-4 justify-center">
+                    <span class="mr-3 text-sm landscape:text-lg">Cek Status</span>
+                    <i class='bx bx-history text-2xl'></i>
+                </x-button-menu>
             </div>
         </div>
     </x-content>

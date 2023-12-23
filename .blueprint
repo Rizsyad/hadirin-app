@@ -1,0 +1,49 @@
+created:
+    - app/Http/Controllers/UserController.php
+    - app/Http/Controllers/AbsenController.php
+    - app/Http/Controllers/SuratizinController.php
+    - app/Http/Controllers/SuratcutiController.php
+    - app/Http/Controllers/SettingController.php
+    - database/factories/UserFactory.php
+    - database/factories/AbsenFactory.php
+    - database/factories/SuratizinFactory.php
+    - database/factories/SuratcutiFactory.php
+    - database/factories/SettingFactory.php
+    - database/migrations/2023_12_23_190128_create_users_table.php
+    - database/migrations/2023_12_23_190129_create_absens_table.php
+    - database/migrations/2023_12_23_190130_create_suratizins_table.php
+    - database/migrations/2023_12_23_190131_create_suratcutis_table.php
+    - database/migrations/2023_12_23_190132_create_settings_table.php
+    - app/Models/User.php
+    - app/Models/Absen.php
+    - app/Models/Suratizin.php
+    - app/Models/Suratcuti.php
+    - app/Models/Setting.php
+    - tests/Feature/Http/Controllers/UserControllerTest.php
+    - tests/Feature/Http/Controllers/AbsenControllerTest.php
+    - tests/Feature/Http/Controllers/SuratizinControllerTest.php
+    - tests/Feature/Http/Controllers/SuratcutiControllerTest.php
+    - tests/Feature/Http/Controllers/SettingControllerTest.php
+    - app/Http/Requests/UserStoreRequest.php
+    - app/Http/Requests/UserUpdateRequest.php
+    - app/Http/Requests/SuratizinUpdateRequest.php
+    - app/Http/Requests/SuratcutiUpdateRequest.php
+    - app/Http/Requests/SettingUpdateRequest.php
+    - resources/views/user/index.blade.php
+    - resources/views/user/create.blade.php
+    - resources/views/user/show.blade.php
+    - resources/views/user/edit.blade.php
+    - resources/views/absen/index.blade.php
+    - resources/views/suratizin/index.blade.php
+    - resources/views/suratizin/show.blade.php
+    - resources/views/suratcuti/index.blade.php
+    - resources/views/suratcuti/show.blade.php
+    - resources/views/setting/index.blade.php
+updated:
+    - routes/web.php
+models:
+    User: { nip: 'string:6', nama: 'string:100', email: 'string:100', password: 'string:150', tanggal_lahir: date, photo: text, level: 'enum:admin,karyawan' }
+    Absen: { lat: 'decimal:8,6 nullable', long: 'decimal:9,6 nullable', lokasi: 'text nullable', jam_datang: 'time nullable', jam_pulang: 'time nullable', tanggal_absen: date, kategori: 'enum:Terlambat,"Tepat Waktu",Izin,Cuti,"Tidak Hadir"', user_id: foreign }
+    Suratizin: { keterangan: text, file_izin: text, tanggal_izin: date, status: 'enum:Pending,Terima,Tolak', user_id: foreign }
+    Suratcuti: { keterangan: text, tanggal_awal: date, tanggal_akhir: date, status: 'enum:Pending,Terima,Tolak', user_id: foreign }
+    Setting: { jam_masuk: time, jam_keluar: time, lat: 'decimal:8,6', long: 'decimal:9,6', radius: integer }

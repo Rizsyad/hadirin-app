@@ -99,13 +99,6 @@
         <div id="closeOverlay" class="flex items-end justify-center h-full">
             <div id="bodyOverlay" class="bg-white p-4 rounded-md w-full">
 
-                {{-- <div class="mx-auto h-px mb-4 bg-gray-400 border-0 w-20 h-1 rounded-full">
-                </div> --}}
-
-                {{-- <p class="text-center text-gray-400 text-[0.6rem] mb-4 h-px">
-                    <i class="fa-solid fa-x"></i>
-                </p> --}}
-
                 <div class="flex flex-row border-b-2 border-black">
                     <p class="flex-auto font-bold">{{ \Carbon\Carbon::now()->addDays()->isoFormat('dddd, D MMMM Y') }}</p>
                     <span class="flex-none text-[#44B156] mb-2">Hadir</span>

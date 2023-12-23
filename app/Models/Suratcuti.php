@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Absen extends Model
+class Suratcuti extends Model
 {
     use HasFactory;
 
@@ -15,13 +15,10 @@ class Absen extends Model
      * @var array
      */
     protected $fillable = [
-        'lat',
-        'long',
-        'lokasi',
-        'jam_datang',
-        'jam_pulang',
-        'tanggal_absen',
-        'kategori',
+        'keterangan',
+        'tanggal_awal',
+        'tanggal_akhir',
+        'status',
         'user_id',
     ];
 
@@ -32,9 +29,8 @@ class Absen extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'lat' => 'decimal:6',
-        'long' => 'decimal:6',
-        'tanggal_absen' => 'date',
+        'tanggal_awal' => 'date',
+        'tanggal_akhir' => 'date',
         'user_id' => 'integer',
     ];
 

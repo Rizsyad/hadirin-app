@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SuratIzin extends Model
+class Suratizin extends Model
 {
     use HasFactory;
 
@@ -18,6 +18,7 @@ class SuratIzin extends Model
         'keterangan',
         'file_izin',
         'tanggal_izin',
+        'status',
         'user_id',
     ];
 

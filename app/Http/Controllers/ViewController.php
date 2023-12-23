@@ -40,4 +40,9 @@ class ViewController extends Controller
     {
         return view('Page.pengajuancuti');
     }
+
+    public function cekstatus()
+    {
+        return view('Page.cekstatus');
+    }
 }

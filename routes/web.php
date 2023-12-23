@@ -15,10 +15,6 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('Page.Login');
-// });
-
 Route::controller(AuthController::class)->name('auth')->group(function () {
     Route::get('/', 'login')->name('login');
 });
@@ -31,4 +27,30 @@ Route::controller(ViewController::class)->prefix('views')->name('views.')->group
     Route::get('absen-pulang', 'absenpulang')->name('absenpulang');
     Route::get('surat-izin', 'suratizin')->name('suratizin');
     Route::get('pengajuan-cuti', 'pengajuancuti')->name('pengajuancuti');
+    Route::get('cek-status', 'cekstatus')->name('cekstatus');
 });
+
+Route::resource('user', App\Http\Controllers\UserController::class);
+Route::resource('absen', App\Http\Controllers\AbsenController::class)->only('index');
+Route::resource('suratizin', App\Http\Controllers\SuratizinController::class)->only('index', 'show', 'update');
+Route::resource('suratcuti', App\Http\Controllers\SuratcutiController::class)->only('index', 'show', 'update');
+
+
+Route::resource('user', App\Http\Controllers\UserController::class);
+
+Route::resource('absen', App\Http\Controllers\AbsenController::class)->only('index');
+
+Route::resource('suratizin', App\Http\Controllers\SuratizinController::class)->only('index', 'show', 'update');
+
+Route::resource('suratcuti', App\Http\Controllers\SuratcutiController::class)->only('index', 'show', 'update');
+
+
+Route::resource('user', App\Http\Controllers\UserController::class);
+
+Route::resource('absen', App\Http\Controllers\AbsenController::class)->only('index');
+
+Route::resource('suratizin', App\Http\Controllers\SuratizinController::class)->only('index', 'show', 'update');
+
+Route::resource('suratcuti', App\Http\Controllers\SuratcutiController::class)->only('index', 'show', 'update');
+
+Route::resource('setting', App\Http\Controllers\SettingController::class)->only('index', 'update');

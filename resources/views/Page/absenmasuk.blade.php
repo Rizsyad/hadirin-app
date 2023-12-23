@@ -54,12 +54,12 @@
 
             async function setPosition(position) {
                 //  lokasi yang akurat
-                // var latitude = position.coords.latitude;
-                // var longitude = position.coords.longitude;
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
 
                 // diluar -> depan bl mungkin
-                var latitude = -6.2359007; 
-                var longitude = 106.7472317;
+                // var latitude = -6.2359007; 
+                // var longitude = 106.7472317;
 
                 // didalam
                 // var latitude = -6.2357007; 

@@ -8,30 +8,42 @@ models:
     photo: text
     level: enum:admin,karyawan
   Absen:
-    lat: decimal:8,6
-    long: decimal:9,6
-    lokasi: text
-    tipe: enum:masuk,pulang
-    kategori: enum:Terlambat,Tepat Waktu,Izin
+    lat: decimal:8,6 nullable
+    long: decimal:9,6 nullable
+    lokasi: text nullable
+    jam_datang: time nullable
+    jam_pulang: time nullable
+    tanggal_absen: date
+    kategori: enum:Terlambat,"Tepat Waktu",Izin,Cuti,"Tidak Hadir"
     user_id: foreign
-  Surat_izin:
+  Suratizin:
     keterangan: text
     file_izin: text
     tanggal_izin: date
+    status: enum:Pending,Terima,Tolak
     user_id: foreign
-  Surat_cuti:
+  Suratcuti:
     keterangan: text
     tanggal_awal: date
     tanggal_akhir: date
+    status: enum:Pending,Terima,Tolak
     user_id: foreign
+  Setting:
+    jam_masuk: time
+    jam_keluar: time
+    lat: decimal:8,6
+    long: decimal:9,6
+    radius: integer
 
 controllers:
-  Api/Users: 
-    resource: api
-  Api/Absen: 
-    resource: api.index
-  Api/SuratIzin: 
-    resource: api.index, api.show, api.update
-  Api/SuratCuti: 
-    resource: api.index, api.show, api.update
+  User: 
+    resource: web
+  Absen: 
+    resource: index
+  Suratizin: 
+    resource: index, show, update
+  Suratcuti: 
+    resource: index, show, update
+  Setting: 
+    resource: index, update
 
