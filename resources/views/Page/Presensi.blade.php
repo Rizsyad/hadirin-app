@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('head')
-<title>Presensi</title>
+    <title>Presensi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 @endsection
 
 @section('content')
@@ -97,9 +98,9 @@
     <div id="overlay" class="fixed bottom-0 inset-0 bg-black bg-opacity-70 z-50 hidden">
         <div id="closeOverlay" class="flex items-end justify-center h-full">
             <div id="bodyOverlay" class="bg-white p-4 rounded-md w-full">
-                
-                <div class="mx-auto h-px mb-4 bg-gray-400 border-0 w-20 h-1 rounded-full">
-                </div>
+
+                {{-- <div class="mx-auto h-px mb-4 bg-gray-400 border-0 w-20 h-1 rounded-full">
+                </div> --}}
 
                 {{-- <p class="text-center text-gray-400 text-[0.6rem] mb-4 h-px">
                     <i class="fa-solid fa-x"></i>
@@ -153,14 +154,41 @@
 @section('javascript')
     <script>
         $(document).ready(function() {
-            $("#overlay").click(function() {
-                $("#overlay").addClass("hidden");
-                $("body").removeClass("overflow-hidden");
+
+            function showOverlay() {
+                $("#overlay").removeClass("hidden");
+                $("#bodyOverlay").addClass("animate__animated animate__fadeInUp");
+                $("body").addClass("!overflow-hidden");
+            }
+
+            function hideOverlay() {
+                $("#bodyOverlay").addClass("animate__animated animate__fadeOutDown");
+
+                // Add a delay to match the animation duration
+                setTimeout(function() {
+                    $("#overlay").addClass("hidden");
+                    $("#bodyOverlay").removeClass("animate__fadeOutDown");
+                    $("body").removeClass("!overflow-hidden");
+                }, 500);
+            }
+
+            $("#overlay").click(function(e) {
+                if (e.target.id === "closeOverlay") {
+                    hideOverlay();
+                    // $("#overlay").addClass("hidden");
+                    // $("body").removeClass("overflow-hidden");
+                }
+            });
+
+            $("#bodyOverlay").click(function(e) {
+                e.stopPropagation(); // Prevent the click event from reaching the #overlay element
             });
 
             $(".detail-presensi").click(function() {
-                $("#overlay").removeClass("hidden");
-                $("body").addClass("overflow-hidden");
+                // $("#overlay").removeClass("hidden");
+                // $("body").addClass("overflow-hidden");
+                showOverlay();
+                
             });
         })
     </script>

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Absen extends Model
 {
     use HasFactory;
 
@@ -15,22 +15,12 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'nip',
-        'nama',
-        'email',
-        'password',
-        'tanggal_lahir',
-        'photo',
-        'level',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password',
+        'lat',
+        'long',
+        'lokasi',
+        'tipe',
+        'kategori',
+        'user_id',
     ];
 
     /**
@@ -40,6 +30,13 @@ class User extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'tanggal_lahir' => 'date',
+        'lat' => 'decimal:6',
+        'long' => 'decimal:6',
+        'user_id' => 'integer',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

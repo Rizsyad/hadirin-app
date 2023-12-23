@@ -1,0 +1,37 @@
+models:
+  User:
+    nip: string:6
+    nama: string:100
+    email: string:100
+    password: string:150
+    tanggal_lahir: date
+    photo: text
+    level: enum:admin,karyawan
+  Absen:
+    lat: decimal:8,6
+    long: decimal:9,6
+    lokasi: text
+    tipe: enum:masuk,pulang
+    kategori: enum:Terlambat,Tepat Waktu,Izin
+    user_id: foreign
+  Surat_izin:
+    keterangan: text
+    file_izin: text
+    tanggal_izin: date
+    user_id: foreign
+  Surat_cuti:
+    keterangan: text
+    tanggal_awal: date
+    tanggal_akhir: date
+    user_id: foreign
+
+controllers:
+  Api/Users: 
+    resource: api
+  Api/Absen: 
+    resource: api.index
+  Api/SuratIzin: 
+    resource: api.index, api.show, api.update
+  Api/SuratCuti: 
+    resource: api.index, api.show, api.update
+

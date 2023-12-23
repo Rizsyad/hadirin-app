@@ -23,14 +23,26 @@
             <input type="password" name="password" id="password" class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Masukan Password" />
          </div>
          <a href="#" class="text-sm">Lupa Password ?</a>
-         <x-button class="bg-[#44B156] text-white">Login</x-button>
+         <x-button class="bg-[#44B156] text-white" id="login">Login</x-button>
       </div>
    </x-content>
-
-   {{-- <x-footer /> --}}
 
 @endsection
 
 @section('javascript')
-    
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   $("#login").click(function(){
+      var email = $("#email").val();
+      var password = $("#password").val();
+
+      if(email == "" || password == "") {
+         return Swal.fire('Kesalahan!', 'Email dan password tidak boleh kosong!', 'error');
+      }
+
+   });
+})
+</script>
 @endsection

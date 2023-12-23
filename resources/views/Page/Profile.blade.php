@@ -40,6 +40,10 @@
                         class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                         placeholder="Masukan Tanggal" />
                 </div>
+                <div class="mb-4">
+                    <label for="surat">Photo</label>
+                    <input type="file" id="file" name="file" />
+                </div>
                 <x-button class="bg-[#44B156] text-white w-full">Save Changes</x-button>
             </div>
         </div>
