@@ -22,6 +22,7 @@ class Absen extends Model
         'jam_pulang',
         'tanggal_absen',
         'kategori',
+        'status',
         'user_id',
     ];
 

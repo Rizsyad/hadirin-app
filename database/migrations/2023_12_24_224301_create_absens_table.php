@@ -23,7 +23,8 @@ return new class extends Migration
             $table->time('jam_datang')->nullable();
             $table->time('jam_pulang')->nullable();
             $table->date('tanggal_absen');
-            $table->enum('kategori', ["Terlambat","Tepat Waktu","Izin","Cuti","Tidak Hadir"]);
+            $table->enum('kategori', ["Terlambat","Tepat Waktu","Izin","Cuti"]);
+            $table->enum('status', ["Hadir","Tidak Hadir"]);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

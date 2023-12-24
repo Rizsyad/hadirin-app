@@ -30,7 +30,8 @@ class AbsenFactory extends Factory
             'jam_datang' => $this->faker->time(),
             'jam_pulang' => $this->faker->time(),
             'tanggal_absen' => $this->faker->date(),
-            'kategori' => $this->faker->randomElement(["Terlambat","Tepat Waktu","Izin","Cuti","Tidak Hadir"]),
+            'kategori' => $this->faker->randomElement(["Terlambat","Tepat Waktu","Izin","Cuti"]),
+            'status' => $this->faker->randomElement(["Hadir","Tidak Hadir"]),
             'user_id' => User::factory(),
         ];
     }

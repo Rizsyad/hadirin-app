@@ -14,9 +14,9 @@
             <p class="italic text-muted text-xs landscape:text-base">'Waktu adalah uang, Selamat bekerja'</p>
         </div>
         <div class="grow">
-            <button class="absolute top-0 right-0 text-lg mt-5 mr-5 bg-[#44B156] p-2 text-white drop-shadow-xl rounded-lg">
+            <a href="{{route('mobile.auth.logout')}}" class="absolute top-0 right-0 text-lg mt-5 mr-5 bg-[#44B156] p-2 text-white drop-shadow-xl rounded-lg">
                 <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
+            </a>
         </div>
     </x-header>
 
@@ -28,17 +28,17 @@
                     <div class="flex flex-col items-center">
                         <i class='bx bxs-calendar-check'></i>
                         <span>Hadir</span>
-                        <span>0</span>
+                        <span>{{$hadir}}</span>
                     </div>
                     <div class="flex flex-col items-center">
-                        <i class='bx bx-plus-medical'></i>
-                        <span>Sakit</span>
-                        <span>0</span>
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        <span>Tidak Hadir</span>
+                        <span >{{$tidak}}</span>
                     </div>
                     <div class="flex flex-col items-center">
                         <i class='bx bxs-briefcase'></i>
-                        <span>Izin</span>
-                        <span>0</span>
+                        <span>Izin / Cuti</span>
+                        <span>{{$izin}}</span>
                     </div>
                 </div>
             </x-info-header>
@@ -46,24 +46,24 @@
             <div class="mt-20 w-11/12">
                 <p class="font-bold text-sm md:text-md">Menu Aktivitas</p>
                 <div class="grid grid-cols-2 gap-5">
-                  <x-button-menu href="{{route('views.absenmasuk')}}">
+                  <x-button-menu href="{{route('mobile.views.absenmasuk')}}">
                      <span class="flex-auto mr-3 text-sm landscape:text-lg">Absen Masuk</span>
                      <i class='flex-auto bx bxs-user-check text-3xl'></i>                  
                   </x-button-menu>
-                  <x-button-menu href="{{route('views.absenpulang')}}">
+                  <x-button-menu href="{{route('mobile.views.absenpulang')}}">
                      <span class="flex-auto mr-3 text-sm landscape:text-lg">Absen Pulang</span>
                      <i class='flex-auto bx bxs-home-smile text-3xl'></i>
                   </x-button-menu>
-                  <x-button-menu href="{{route('views.suratizin')}}">
+                  <x-button-menu href="{{route('mobile.views.suratizin')}}">
                         <span class="flex-auto mr-3 text-sm landscape:text-lg">Surat Izin</span>
                         <i class="flex-auto fa-solid fa-clipboard text-2xl"></i>
                   </x-button-menu>
-                  <x-button-menu href="{{route('views.pengajuancuti')}}">
+                  <x-button-menu href="{{route('mobile.views.pengajuancuti')}}">
                         <span class="flex-auto mr-3 text-sm landscape:text-lg">Surat Cuti</span>
                         <i class="flex-auto fa-solid fa-clipboard text-2xl"></i>
                   </x-button-menu>
                 </div>
-                <x-button-menu href="{{route('views.cekstatus')}}" class="mt-4 justify-center">
+                <x-button-menu href="{{route('mobile.views.cekstatus')}}" class="mt-4 justify-center">
                     <span class="mr-3 text-sm landscape:text-lg">Cek Status</span>
                     <i class='bx bx-history text-2xl'></i>
                 </x-button-menu>

@@ -16,6 +16,7 @@ class Setting extends Model
      */
     protected $fillable = [
         'jam_masuk',
+        'max_jam_masuk',
         'jam_keluar',
         'lat',
         'long',

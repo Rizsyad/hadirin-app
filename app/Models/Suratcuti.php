@@ -16,6 +16,7 @@ class Suratcuti extends Model
      */
     protected $fillable = [
         'keterangan',
+        'keterangan_admin',
         'tanggal_awal',
         'tanggal_akhir',
         'status',

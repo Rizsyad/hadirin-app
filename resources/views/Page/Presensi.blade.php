@@ -18,11 +18,11 @@
                 <div class="grid grid-cols-2 text-center text-lg divide-x divide-gray-400">
                     <div class="flex flex-col items-center">
                         <span class="font-bold">Jam Datang</span>
-                        <span class="text-[#44B156] text-3xl">00:00</span>
+                        <span class="text-[#44B156] text-3xl">{{ substr($records[date('d')-1]->jam_datang, 0, 5)  }}</span>
                     </div>
                     <div class="flex flex-col items-center">
                         <span class="font-bold">Jam Pulang</span>
-                        <span class="text-[#44B156] text-3xl">00:00</span>
+                        <span class="text-[#44B156] text-3xl">{{ substr($records[date('d')-1]->jam_pulang, 0, 5) }}</span>
                     </div>
                 </div>
             </x-info-header>
@@ -33,60 +33,37 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3">Tanggal</th>
-                            <th scope="col" class="px-6 py-3">Datang - Pulang</th>
+                            <th scope="col" class="px-6 py-3">Datang / Pulang</th>
                             <th scope="col" class="px-6 py-3"></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($records as $record)
                         <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">00:00 - 00:00</td>
-                            <td class="px-6 py-4 detail-presensi">
+                            <td class="px-6 py-4">{{ \Carbon\Carbon::parse($record->tanggal_absen)->isoFormat('dddd, D MMMM Y') }}</td>
+                            @if($record->status == "Tidak Hadir" && $record->kategori == "Terlambat")
+                                <td class="px-6 py-4 text-red-500">Tidak Hadir</td>
+                            @elseif($record->status == "Tidak Hadir" && ($record->kategori == "Izin" || $record->kategori == "Cuti") )
+                                <td class="px-6 py-4 text-yellow-500">{{$record->kategori}}</td>
+                            @else
+                                <td class="px-6 py-4">
+                                    {{ substr($record->jam_datang, 0, 5)}} / {{ substr($record->jam_pulang, 0, 5)}}
+                                </td>
+                            @endif
+                            
+                            <td 
+                            class="px-6 py-4 detail-presensi" 
+                            data-jamdatang="{{ substr($record->jam_datang, 0, 5) }}"
+                            data-jampulang="{{ substr($record->jam_pulang, 0, 5)}}"
+                            data-tanggalabsen="{{ \Carbon\Carbon::parse($record->tanggal_absen)->isoFormat('dddd, D MMMM Y') }}"
+                            data-kategori="{{$record->kategori}}"
+                            data-status="{{$record->status}}"
+                            data-lokasi="{{$record->lokasi}}"
+                            >
                                 <i class='bx bx-dots-vertical-rounded'></i>
                             </td>
                         </tr>
-                        <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->addDays()->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">-</td>
-                            <td class="px-6 py-4 detail-presensi">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->addDays(2)->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">-</td>
-                            <td class="px-6 py-4 detail-presensi">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->addDays(3)->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">-</td>
-                            <td class="px-6 py-4 detail-presensi">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->addDays(4)->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">-</td>
-                            <td class="px-6 py-4 detail-presensi">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->addDays(4)->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">-</td>
-                            <td class="px-6 py-4 detail-presensi">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b text-xs landscape:text-base">
-                            <td class="px-6 py-4">{{ \Carbon\Carbon::now()->addDays(4)->isoFormat('dddd, D MMMM Y') }}</td>
-                            <td class="px-6 py-4">-</td>
-                            <td class="px-6 py-4 detail-presensi">
-                                <i class='bx bx-dots-vertical-rounded'></i>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -101,25 +78,25 @@
 
                 <div class="flex flex-row border-b-2 border-black">
                     <p class="flex-auto font-bold">{{ \Carbon\Carbon::now()->addDays()->isoFormat('dddd, D MMMM Y') }}</p>
-                    <span class="flex-none text-[#44B156] mb-2">Hadir</span>
+                    <span class="font-bold flex-none mb-2" id="status"></span>
+                    {{-- <span class="font-bold" id="keterangan"></span> --}}
+                    {{-- <span class="font-bold text-red-500">Terlambat</span>
+                    <span class="font-bold text-green-500">Tepat Waktu</span>
+                    <span class="font-bold text-yellow-500">Izin / Cuti</span> --}}
                 </div>
 
                 <div class="grid grid-cols-2 border-b-2 border-black">
                     <div class="mx-auto my-2">
                         <div class="flex flex-col mx-auto">
                             <p class="text-gray-400">Jam Datang</p>
-                            <span class="flex-auto font-bold text-center">
-                                00:00
-                            </span>
+                            <span class="flex-auto font-bold text-center" id="jamdatang"></span>
                         </div>
                     </div>
 
                     <div class="mx-auto my-2">
                         <div class="flex flex-col mx-auto">
                             <p class="text-gray-400">Jam Pulang</p>
-                            <span class="flex-auto font-bold text-center">
-                                00:00
-                            </span>
+                            <span class="flex-auto font-bold text-center" id="jampulang"></span>
                         </div>
                     </div>
                 </div>
@@ -127,16 +104,17 @@
                 <div class="flex flex-col border-b-2 border-black">
                     <div class="my-2">
                         <p class="text-gray-400">Lokasi</p>
-                        <span class="font-bold">Univeritas Budi Luhur</span>
+                        <span class="font-bold" id="lokasi"></span>
                     </div>
                 </div>
 
                 <div class="flex flex-col border-b-2 border-black">
                     <div class="my-2">
                         <p class="text-gray-400">Keterangan</p>
-                        <span class="font-bold text-red-500">Terlambat</span>
+                        <span class="font-bold" id="kategori"></span>
+                        {{-- <span class="font-bold text-red-500">Terlambat</span>
                         <span class="font-bold text-green-500">Tepat Waktu</span>
-                        <span class="font-bold text-yellow-500">Izin / Cuti</span>
+                        <span class="font-bold text-yellow-500">Izin / Cuti</span> --}}
                     </div>
                 </div>
             </div>
@@ -168,8 +146,6 @@
             $("#overlay").click(function(e) {
                 if (e.target.id === "closeOverlay") {
                     hideOverlay();
-                    // $("#overlay").addClass("hidden");
-                    // $("body").removeClass("overflow-hidden");
                 }
             });
 
@@ -178,10 +154,45 @@
             });
 
             $(".detail-presensi").click(function() {
-                // $("#overlay").removeClass("hidden");
-                // $("body").addClass("overflow-hidden");
+                var jamdatang = $(this).data('jamdatang')
+                var jampulang = $(this).data('jampulang')
+                var tanggalabsen = $(this).data('tanggalabsen')
+                var kategori = $(this).data('kategori');
+                var lokasi = $(this).data('lokasi')
+                var status = $(this).data('status')
+
+                var maps = ['jamdatang', 'jampulang', 'tanggalabsen', 'kategori', 'lokasi', 'status'];
+
+                // remove all class
+                $("#keterangan").removeClass("text-red-500");
+                $("#keterangan").removeClass("text-yellow-500");
+                $("#keterangan").removeClass("text-green-500");
+
+                maps.map(function(key) {
+                    $(`#${key}`).html(eval(key));
+                    $(`#${key}`).removeClass('text-red-500');
+                    $(`#${key}`).removeClass('text-yellow-500');
+                    $(`#${key}`).removeClass('text-green-500');
+                });
+
+                if(status == 'Hadir') {
+                    $("#status").addClass('text-green-500');
+                } else {
+                    $("#status").addClass('text-red-500');
+                }
+
+                if(kategori == "Terlambat") {
+                    $("#keterangan").addClass("text-red-500");
+                    $("#kategori").addClass("text-red-500");
+                } else if (kategori == "Izin" || kategori == "Cuti") {
+                    $("#keterangan").addClass("text-yellow-500");
+                    $("#kategori").addClass("text-yellow-500");
+                } else {
+                    $("#keterangan").addClass("text-green-500");
+                    $("#kategori").addClass("text-green-500");
+                }
+
                 showOverlay();
-                
             });
         })
     </script>

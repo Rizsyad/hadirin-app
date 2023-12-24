@@ -7,7 +7,7 @@
 
 @section('content')
     <x-header class="flex h-20 -mt-6 z-10">
-        <a href="{{ route('views.home') }}" class="flex-none text-2xl">
+        <a href="{{ route('mobile.views.home') }}" class="flex-none text-2xl">
             <i class='bx bx-chevron-left'></i>
         </a>
         <div class="grow text-center text-xl">
@@ -17,11 +17,14 @@
 
     <x-content class="!-mt-20 z-0 !mx-0">
         <div class="h-full w-screen absolute" id="map"></div>
+        <input type="hidden" id="lat" />
+        <input type="hidden" id="long" />
+        <input type="hidden" id="lokasi" />
     </x-content>
 
     <x-footer-green>
         <p class="text-white text-center text-lg">Tolong Pastikan Anda dalam radius...</p>
-        <x-button-surat>Konfirmasi Lokasi</x-button-surat>
+        <x-button-surat id="konfbutton">Konfirmasi Lokasi</x-button-surat>
     </x-footer-green>
 @endsection
 
@@ -31,6 +34,17 @@
 
     <script type="text/javascript">
         $(document).ready(async () => {
+
+            async function cekabsen()
+            {
+                var data = await $.get("{{route('mobile.api.cekabsenmasuk')}}");
+                if(data) {
+                    return Swal.fire(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
+                }
+            }
+
+            await cekabsen();
+            
             var permissionStatus = await navigator?.permissions?.query({
                 name: 'geolocation'
             })
@@ -47,29 +61,33 @@
                 Swal.fire('Geolocation denied', 'Geolocation is not supported by this browser.', 'error')
             }
 
-            var codinateBL = [-6.234524486140895, 106.74744433993867];
-            var map = L.map('map').setView(codinateBL, 17);
-            L.circle(codinateBL, 140).addTo(map);
+            var codinate = [{{$setting->lat}}, {{$setting->long}}];
+            var map = L.map('map').setView(codinate, 17);
+            L.circle(codinate, 140).addTo(map);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
             async function setPosition(position) {
                 //  lokasi yang akurat
-                var latitude = position.coords.latitude;
-                var longitude = position.coords.longitude;
+                // var latitude = position.coords.latitude;
+                // var longitude = position.coords.longitude;
 
                 // diluar -> depan bl mungkin
                 // var latitude = -6.2359007; 
                 // var longitude = 106.7472317;
 
                 // didalam
-                // var latitude = -6.2357007; 
-                // var longitude = 106.7472317;
+                var latitude = -6.2357007; 
+                var longitude = 106.7472317;
+
+                $("#lat").val(latitude);
+                $("#long").val(longitude);
                 
                 // get nama lokasi dari coodinat yang diberikan
                 var nominatim = await $.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
-                var lokasi = nominatim?.name || nominatim?.display_name;
+                var lokasi = await nominatim?.name || nominatim?.display_name;
+                $("#lokasi").val(lokasi);
 
-                var BLLocation = new L.LatLng(codinateBL[0], codinateBL[1]);
+                var BLLocation = new L.LatLng(codinate[0], codinate[1]);
                 var myLocation = new L.LatLng(latitude, longitude);
 
                 // Create a marker using the obtained latitude and longitude
@@ -82,10 +100,28 @@
                 // Compare the distance with the radius (140 meters in this case) berada dalam jangkauan
                 if (distance >= 140) {
                   Swal.fire('Oooops...', 'Anda berada di luar radius lokasi', 'error');
+                  $("#konfbutton").hide();
+                  $("#content > footer > div > p").addClass('mt-10');
+                } else {
+                    $("#konfbutton").show();
+                    $("#content > footer > div > p").removeClass('mt-10');
                 }
-
-                console.log(lokasi)
             }
+
+            $("#konfbutton").click(function(){
+                var latitude = $("#lat").val();
+                var longitude = $("#long").val();
+                var lokasi = $("#lokasi").val();
+
+                $.ajax({
+                    url: "{{route('mobile.api.absenmasuk')}}",
+                    type: "POST",
+                    data: {latitude, longitude, lokasi},
+                    success: function(data) {
+                        return Swal.fire(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
+                    }
+                })
+            });
         })
     </script>
 @endsection

@@ -25,6 +25,7 @@ class SuratcutiFactory extends Factory
     {
         return [
             'keterangan' => $this->faker->text,
+            'keterangan_admin' => $this->faker->text,
             'tanggal_awal' => $this->faker->date(),
             'tanggal_akhir' => $this->faker->date(),
             'status' => $this->faker->randomElement(["Pending","Terima","Tolak"]),

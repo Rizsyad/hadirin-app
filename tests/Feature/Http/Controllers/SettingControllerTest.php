@@ -49,6 +49,7 @@ class SettingControllerTest extends TestCase
     {
         $setting = Setting::factory()->create();
         $jam_masuk = $this->faker->time();
+        $max_jam_masuk = $this->faker->time();
         $jam_keluar = $this->faker->time();
         $lat = $this->faker->latitude;
         $long = $this->faker->randomFloat(/** decimal_attributes **/);
@@ -56,6 +57,7 @@ class SettingControllerTest extends TestCase
 
         $response = $this->put(route('setting.update', $setting), [
             'jam_masuk' => $jam_masuk,
+            'max_jam_masuk' => $max_jam_masuk,
             'jam_keluar' => $jam_keluar,
             'lat' => $lat,
             'long' => $long,
@@ -68,6 +70,7 @@ class SettingControllerTest extends TestCase
         $response->assertSessionHas('setting.id', $setting->id);
 
         $this->assertEquals($jam_masuk, $setting->jam_masuk);
+        $this->assertEquals($max_jam_masuk, $setting->max_jam_masuk);
         $this->assertEquals($jam_keluar, $setting->jam_keluar);
         $this->assertEquals($lat, $setting->lat);
         $this->assertEquals($long, $setting->long);

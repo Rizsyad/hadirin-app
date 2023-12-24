@@ -24,6 +24,7 @@ class SettingFactory extends Factory
     {
         return [
             'jam_masuk' => $this->faker->time(),
+            'max_jam_masuk' => $this->faker->time(),
             'jam_keluar' => $this->faker->time(),
             'lat' => $this->faker->latitude,
             'long' => $this->faker->randomFloat(6, 0, 999.999999),

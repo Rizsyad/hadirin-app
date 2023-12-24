@@ -25,6 +25,7 @@ class SettingUpdateRequest extends FormRequest
     {
         return [
             'jam_masuk' => ['required'],
+            'max_jam_masuk' => ['required'],
             'jam_keluar' => ['required'],
             'lat' => ['required', 'numeric', 'between:-99.999999,99.999999'],
             'long' => ['required', 'numeric', 'between:-999.999999,999.999999'],

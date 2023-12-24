@@ -25,6 +25,7 @@ class SuratcutiUpdateRequest extends FormRequest
     {
         return [
             'keterangan' => ['required', 'string'],
+            'keterangan_admin' => ['nullable', 'string'],
             'tanggal_awal' => ['required', 'date'],
             'tanggal_akhir' => ['required', 'date'],
             'status' => ['required', 'in:Pending,Terima,Tolak'],

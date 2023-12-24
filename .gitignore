@@ -21,3 +21,6 @@ yarn-error.log
 # /.blueprint
 composer.lock
 package-lock.json
+
+/public/assets/image/izin/*
+/public/assets/image/karyawan/*

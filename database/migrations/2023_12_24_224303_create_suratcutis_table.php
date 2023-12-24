@@ -18,6 +18,7 @@ return new class extends Migration
         Schema::create('suratcutis', function (Blueprint $table) {
             $table->id();
             $table->text('keterangan');
+            $table->text('keterangan_admin')->nullable();
             $table->date('tanggal_awal');
             $table->date('tanggal_akhir');
             $table->enum('status', ["Pending","Terima","Tolak"]);

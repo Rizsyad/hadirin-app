@@ -16,6 +16,7 @@ class Suratizin extends Model
      */
     protected $fillable = [
         'keterangan',
+        'keterangan_admin',
         'file_izin',
         'tanggal_izin',
         'status',

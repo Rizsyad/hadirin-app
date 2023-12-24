@@ -25,6 +25,7 @@ class SuratizinFactory extends Factory
     {
         return [
             'keterangan' => $this->faker->text,
+            'keterangan_admin' => $this->faker->text,
             'file_izin' => $this->faker->text,
             'tanggal_izin' => $this->faker->date(),
             'status' => $this->faker->randomElement(["Pending","Terima","Tolak"]),

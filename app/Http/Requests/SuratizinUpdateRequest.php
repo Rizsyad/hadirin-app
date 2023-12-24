@@ -25,6 +25,7 @@ class SuratizinUpdateRequest extends FormRequest
     {
         return [
             'keterangan' => ['required', 'string'],
+            'keterangan_admin' => ['nullable', 'string'],
             'file_izin' => ['required', 'string'],
             'tanggal_izin' => ['required', 'date'],
             'status' => ['required', 'in:Pending,Terima,Tolak'],
