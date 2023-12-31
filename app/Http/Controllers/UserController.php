@@ -16,8 +16,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::all();
+        $title = "Master Karyawan";
 
-        return view('user.index', compact('users'));
+        return view('user.index', compact('users', 'title'));
     }
 
     /**
@@ -26,7 +27,9 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        return view('user.create');
+        $title = "Tambah Karyawan";
+
+        return view('user.create', compact('title'));
     }
 
     /**
@@ -37,9 +40,9 @@ class UserController extends Controller
     {
         $user = User::create($request->validated());
 
-        $request->session()->flash('user.id', $user->id);
+        $request->session()->flash('success', 'Karyawan berhasil ditambah');
 
-        return redirect()->route('user.index');
+        return redirect()->route('admin.user.index');
     }
 
     /**
@@ -47,10 +50,12 @@ class UserController extends Controller
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, User $user)
-    {
-        return view('user.show', compact('user'));
-    }
+    // public function show(Request $request, User $user)
+    // {
+    //     $title = "Detail Karyawan";
+
+    //     return view('user.show', compact('user', 'title'));
+    // }
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -59,7 +64,9 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user)
     {
-        return view('user.edit', compact('user'));
+        $title = "Edit Karyawan";
+
+        return view('user.edit', compact('user', 'title'));
     }
 
     /**
@@ -69,11 +76,13 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $validate = $request->validated();
 
-        $request->session()->flash('user.id', $user->id);
+        $user->update($validate);
 
-        return redirect()->route('user.index');
+        $request->session()->flash('success', 'Karyawan berhasil diupdate');
+
+        return redirect()->route('admin.user.index');
     }
 
     /**
@@ -85,6 +94,11 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('user.index');
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Karyawan Berhasil Dihapus!.',
+        ]); 
+
+        // return redirect()->route('admin.user.index');
     }
 }

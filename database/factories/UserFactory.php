@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'password' => $this->faker->password,
             'tanggal_lahir' => $this->faker->date(),
             'photo' => $this->faker->text,
+            'jabatan' => $this->faker->randomElement(["Manager","CEO","IT Support"]),
             'level' => $this->faker->randomElement(["admin","karyawan"]),
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,6 @@ use Session;
 
 class MobileController extends Controller
 {
-    protected $id;
-
-    public function __construct()
-    {
-        $this->id = Session::get('id');
-    }
 
     public function absenmasuk(Request $request)
     {
@@ -33,7 +28,7 @@ class MobileController extends Controller
             "long" => $long,
             'lokasi' => $lokasi,
             "tanggal_absen" => date("Y-m-d"),
-            "user_id" => $this->id
+            "user_id" => Session::get('id')
         ];
 
         // get settingan dari admin
@@ -69,7 +64,7 @@ class MobileController extends Controller
     public function cekabsenmasuk()
     {
         $absen = Absen::where([
-            'user_id' => $this->id,
+            'user_id' => Session::get('id'),
             'tanggal_absen' => date('Y-m-d')
         ])->first();
 
@@ -99,7 +94,7 @@ class MobileController extends Controller
         ];
 
         $absen = Absen::where([
-            'user_id' => $this->id,
+            'user_id' => Session::get('id'),
             "tanggal_absen" => date("Y-m-d"),
         ])->update($data);
 
@@ -121,7 +116,7 @@ class MobileController extends Controller
     public function cekabsenpulang()
     {
         $absen = Absen::where([
-            'user_id' => $this->id,
+            'user_id' => Session::get('id'),
             'tanggal_absen' => date('Y-m-d')
         ])->first();
 
@@ -148,7 +143,7 @@ class MobileController extends Controller
     }
 
     public function suratizin(Request $request) {
-        $id = $this->id;
+        $id = Session::get('id');
         $karyawan = User::where('id', $id)->first();
 
         $request->validate([
@@ -172,16 +167,27 @@ class MobileController extends Controller
             $location = public_path().'/assets/image/izin/'.$dateFolder;
             $filename = $karyawan->nama."_izin_".date('H:i:s').'.'.$extension;
     
-            $file->move($location, $filename);
-            $data['file_izin'] = $filename;
+            if (!file_exists($location)) {
+                File::makeDirectory(public_path().'/'.$location,0755,true);
+            }
 
+            $move = $file->move($location, $filename);
 
-            Suratizin::create($data);
-            return [
-                "status" => "success",
-                "title" => "Berhasil!",
-                "message" => "Surat Izin telah dibuat."
-            ];
+            if($move) {
+                $data['file_izin'] = $dateFolder.'/'.$filename;
+                Suratizin::create($data);
+                return [
+                    "status" => "success",
+                    "title" => "Berhasil!",
+                    "message" => "Surat Izin telah dibuat."
+                ];
+            } else {
+                return [
+                    "status" => "error",
+                    "title" => "Kesalahan!",
+                    "message" => "Surat Izin gagal dibuat."
+                ];
+            }
 
         } else {
             return [
@@ -195,7 +201,7 @@ class MobileController extends Controller
 
     public function suratcuti(Request $request)
     {
-        $id = $this->id;
+        $id = Session::get('id');
         $karyawan = User::where('id', $id)->first();
 
         $request->validate([
@@ -231,14 +237,14 @@ class MobileController extends Controller
             'keterangan_admin',
             'tanggal_awal',
             'tanggal_akhir'
-        ])->where('user_id', $this->id);
+        ])->where('user_id', Session::get('id'));
 
         $suratizin = Suratizin::select([
             'created_at',
             'status',
             'keterangan_admin',
             'tanggal_izin'
-        ])->where('user_id', $this->id);
+        ])->where('user_id', Session::get('id'));
 
         $results = [];
 
@@ -275,7 +281,7 @@ class MobileController extends Controller
 
     public function getprofile()
     {
-        $user = User::find($this->id);
+        $user = User::find(Session::get('id'));
 
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
@@ -286,7 +292,7 @@ class MobileController extends Controller
 
     public function updateprofile(Request $request)
     {
-        $id = $this->id;
+        $id = Session::get('id');
 
         $request->validate([
             'nama' => 'required',
@@ -295,7 +301,7 @@ class MobileController extends Controller
             'file' => 'image|mimes:jpeg,png,jpg|max:2048', // Validasi file gambar dengan batasan tipe dan ukuran
         ]);
 
-        $dataUser = User::where('id', $this->id)->first();
+        $dataUser = User::where('id', Session::get('id'))->first();
 
         $data = [
             "nama" => $request->nama,
@@ -315,14 +321,19 @@ class MobileController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $location = public_path().'/assets/image/karyawan';
                 $filename = $id.'.'.$extension;
+
+                if (!file_exists($location)) {
+                    File::makeDirectory(public_path().'/'.$location,0755,true);
+                }
     
                 // jika sudah ada photo maka update dan hapus
                 if($dataUser->photo !== "") {
+                    unlink($location.'/'.$dataUser->photo);
+                    
                     $dataUser->update([
                         "photo" => ""
                     ]);
     
-                    unlink($location.'/'.$filename);
                 }
     
                 $file->move($location, $filename);

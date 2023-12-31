@@ -40,13 +40,13 @@ $(document).ready(function(){
       var email = $("#email").val();
       var password = $("#password").val();
 
-      if(email == "" || password == "") {
+      if(email.trim() == "" || password.trim() == "") {
          return Swal.fire('Kesalahan!', 'Email dan password tidak boleh kosong!', 'error');
       }
 
       var form = $("#form").serialize();
       $.ajax({
-         url: "{{route('mobile.views.loginAction')}}",
+         url: "{{route('mobile.auth.loginAction')}}",
          method: 'POST',
          data: form,
          success: function(data) {

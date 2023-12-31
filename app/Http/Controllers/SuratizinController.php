@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SuratizinUpdateRequest;
-use App\Models\Suratizin;
 use Illuminate\Http\Request;
+use App\Models\Suratizin;
+use App\Models\Absen;
 
 class SuratizinController extends Controller
 {
@@ -15,8 +16,9 @@ class SuratizinController extends Controller
     public function index(Request $request)
     {
         $suratizins = Suratizin::all();
+        $title = "Pengajuan Izin";
 
-        return view('suratizin.index', compact('suratizins'));
+        return view('suratIzin.index', compact('suratizins', 'title'));
     }
 
     /**
@@ -26,7 +28,7 @@ class SuratizinController extends Controller
      */
     public function show(Request $request, Suratizin $suratizin)
     {
-        return view('suratizin.show', compact('suratizin'));
+        return view('suratIzin.show', compact('suratizin'));
     }
 
     /**
@@ -38,8 +40,27 @@ class SuratizinController extends Controller
     {
         $suratizin->update($request->validated());
 
-        $request->session()->flash('suratizin.id', $suratizin->id);
+        if($request->status == "Terima") {
+            $cekAbsen = Absen::where([
+                'tanggal_absen' => $suratizin->tanggal_izin,
+                'user_id' => $suratizin->user_id,
+            ])->exists();
 
-        return redirect()->route('suratizin.index');
+            if(!$cekAbsen) {
+                $data = [
+                    'tanggal_absen' => $suratizin->tanggal_izin,
+                    'kategori' => 'Izin',
+                    'status' => 'Tidak Hadir',
+                    'user_id' => $suratizin->user_id
+                ];
+    
+                Absen::create($data);
+            }
+
+        }
+
+        return response()->json([
+            'success' => true,
+        ]); 
     }
 }

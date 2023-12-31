@@ -44,7 +44,8 @@
             
             var permissionStatus = await navigator?.permissions?.query({
                 name: 'geolocation'
-            })
+            });
+
             var hasPermission = permissionStatus?.state // Dynamic value
 
             if (hasPermission == "denied") {
@@ -65,16 +66,16 @@
 
             async function setPosition(position) {
                 //  lokasi yang akurat
-                // var latitude = position.coords.latitude;
-                // var longitude = position.coords.longitude;
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
 
                 // diluar -> depan bl mungkin
                 // var latitude = -6.2359007; 
                 // var longitude = 106.7472317;
 
                 // didalam
-                var latitude = -6.2357007; 
-                var longitude = 106.7472317;
+                // var latitude = -6.2357007; 
+                // var longitude = 106.7472317;
                 
                 // get nama lokasi dari coodinat yang diberikan
                 var nominatim = await $.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
@@ -84,8 +85,7 @@
 
                 // Create a marker using the obtained latitude and longitude
                 L.marker([latitude, longitude]).addTo(map).bindPopup('Your Here');
-                //  L.marker([-6.2359007, 106.7472317]).addTo(map).bindPopup('Test');
-
+                
                 // Calculate the distance between the two points
                 var distance = BLLocation.distanceTo(myLocation);
 

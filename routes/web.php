@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MobileController;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +18,6 @@ use App\Http\Controllers\AuthController;
 
 // mobile routes
 Route::name('mobile.')->group(function () {
-
     // login mobile
     Route::controller(AuthController::class)->name('auth.')->group(function () {
         Route::get('/', 'login')->name('login');
@@ -26,7 +26,7 @@ Route::name('mobile.')->group(function () {
     });
     
     // view mobile
-    Route::controller(ViewController::class)->prefix('views')->name('views.')->middleware('isLogin')->group(function () {
+    Route::controller(ViewController::class)->prefix('views')->name('views.')->middleware(['isLogin'])->group(function () {
         Route::get('home', 'home')->name('home');
         Route::get('presensi', 'presensi')->name('presensi');
         Route::get('profile', 'profile')->name('profile');
@@ -38,8 +38,7 @@ Route::name('mobile.')->group(function () {
     });
     
     // api mobile
-    Route::controller(MobileController::class)->prefix('api/v1')->name('api.')->middleware('isLogin')->group(function(){
-    
+    Route::controller(MobileController::class)->prefix('api/v1')->name('api.')->middleware(['isLogin'])->group(function(){
         // setting
         Route::get('/setting', 'setting')->name('setting');
     
@@ -60,17 +59,32 @@ Route::name('mobile.')->group(function () {
 
         // profile
         Route::get('/getprofile', 'getprofile')->name('getprofile');
-        Route::post('/updateprofile', 'updateprofile')->name('updateprofile');
-        
+        Route::post('/updateprofile', 'updateprofile')->name('updateprofile'); 
     });
 });
 
 
 // admin controller
 Route::name('admin.')->prefix('admin')->group(function(){
-    Route::resource('user', App\Http\Controllers\UserController::class);
-    Route::resource('absen', App\Http\Controllers\AbsenController::class)->only('index');
-    Route::resource('suratizin', App\Http\Controllers\SuratizinController::class)->only('index', 'show', 'update');
-    Route::resource('suratcuti', App\Http\Controllers\SuratcutiController::class)->only('index', 'show', 'update');
-    Route::resource('setting', App\Http\Controllers\SettingController::class)->only('index', 'update');
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/', 'login')->name('login');
+        Route::post('/', 'loginAction')->name('loginAction');
+        Route::get('/logout', 'logout')->name('logout');
+    });
+
+    Route::middleware('isLoginAdmin')->group(function(){
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+        
+        Route::resource('user', App\Http\Controllers\UserController::class)->except('show');
+
+        Route::resource('setting', App\Http\Controllers\SettingController::class)->only('index', 'update');
+
+        Route::post('/suratcuti/{suratcuti}', [App\Http\Controllers\SuratcutiController::class, 'update'])->name('suratcuti.update');
+        Route::post('/suratizin/{suratizin}', [App\Http\Controllers\SuratizinController::class, 'update'])->name('suratizin.update');
+
+        Route::resource('suratcuti', App\Http\Controllers\SuratcutiController::class)->only('index');
+        Route::resource('suratizin', App\Http\Controllers\SuratizinController::class)->only('index');
+
+        Route::resource('absen', App\Http\Controllers\AbsenController::class)->only('index');
+    });
 });

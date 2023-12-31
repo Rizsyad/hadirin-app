@@ -10,25 +10,15 @@ export default defineConfig(({ mode }) => {
         //         host: process.env.HOST,
         //     },
         // },
+        build: {
+            outDir: "./public/dist",
+            emptyOutDir: true,
+        },
         plugins: [
             laravel({
-                input: ["resources/css/app.css", "resources/js/app.js"],
+                input: ["resources/css/app.css"],
                 refresh: true,
             }),
         ],
     };
 });
-
-// export default defineConfig({
-//     server: {
-        // hmr: {
-        //     host: import.meta.env.HOST,
-        // },
-//     },
-//     plugins: [
-        // laravel({
-        //     input: ["resources/css/app.css", "resources/js/app.js"],
-        //     refresh: true,
-        // }),
-//     ],
-// });

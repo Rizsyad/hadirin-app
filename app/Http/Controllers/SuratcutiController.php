@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SuratcutiUpdateRequest;
-use App\Models\Suratcuti;
 use Illuminate\Http\Request;
+use App\Models\Suratcuti;
+use App\Models\Absen;
 
 class SuratcutiController extends Controller
 {
@@ -14,9 +15,15 @@ class SuratcutiController extends Controller
      */
     public function index(Request $request)
     {
-        $suratcutis = Suratcuti::all();
+        $suratcutis = Suratcuti::with('user:id,nama')
+        ->has('user')
+        ->whereYear('created_at', date('Y'))
+        ->orderByRaw("FIELD(status, 'Pending', 'Terima', 'Tolak')")
+        ->get();
 
-        return view('suratcuti.index', compact('suratcutis'));
+        $title = "Pengajuan Cuti";
+
+        return view('suratCuti.index', compact('suratcutis', 'title'));
     }
 
     /**
@@ -26,7 +33,7 @@ class SuratcutiController extends Controller
      */
     public function show(Request $request, Suratcuti $suratcuti)
     {
-        return view('suratcuti.show', compact('suratcuti'));
+        return view('suratCuti.show', compact('suratcuti'));
     }
 
     /**
@@ -38,8 +45,35 @@ class SuratcutiController extends Controller
     {
         $suratcuti->update($request->validated());
 
-        $request->session()->flash('suratcuti.id', $suratcuti->id);
+        if($request->status == "Terima") {
+            // Array untuk menyimpan data cuti
+            $data = [];
+    
+            // Tanggal untuk looping
+            $startDate = $suratcuti->tanggal_awal;
+            $endDate = $suratcuti->tanggal_akhir;
+    
+            for ($currentDate = $startDate; $currentDate <= $endDate; $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'))) {
+                $cekAbsen = Absen::where([
+                    'tanggal_absen' => $currentDate,
+                    'user_id' => $suratcuti->user_id,
+                ])->exists();
 
-        return redirect()->route('suratcuti.index');
+                if(!$cekAbsen) {
+                    $data[] = [
+                        'tanggal_absen' => $currentDate,
+                        'kategori' => 'Cuti',
+                        'status' => 'Tidak Hadir',
+                        'user_id' => $suratcuti->user_id
+                    ];
+                }
+            }
+    
+            Absen::insert($data);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]); 
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absen;
 use Illuminate\Http\Request;
+use App\Models\Absen;
+use App\Models\Setting;
 
 class AbsenController extends Controller
 {
@@ -13,8 +14,24 @@ class AbsenController extends Controller
      */
     public function index(Request $request)
     {
-        $absens = Absen::all();
+        $absens = Absen::with('user:id,nama,jabatan,photo')
+        ->has('user')
+        ->select([
+            'user_id',
+            'jam_datang',
+            'jam_pulang',
+            'lat',
+            'long',
+            'lokasi'
+        ])
+        ->whereDay('tanggal_absen', date('d'))
+        ->whereNotNull('lat')
+        ->whereNotNull('long')
+        ->get();
 
-        return view('absen.index', compact('absens'));
+        $settings = Setting::first();
+        $title= 'Histori Absen';
+
+        return view('absen.index', compact('absens', 'settings', 'title'));
     }
 }

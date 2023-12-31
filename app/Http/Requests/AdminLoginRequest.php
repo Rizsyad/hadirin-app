@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SuratcutiUpdateRequest extends FormRequest
+class AdminLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,14 +19,13 @@ class SuratcutiUpdateRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'keterangan_admin' => ['required', 'string'],
-            'status' => ['required', 'in:Pending,Terima,Tolak'],
-            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'email' => 'required|email',
+            'password' => 'required',
         ];
     }
 }

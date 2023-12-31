@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
                 'tanggal_lahir' => '2002-06-01',
                 'photo' => '',
                 'level' => 'admin',
+                'jabatan' => 'CEO'
             ],
             [
                 'nama' => 'Karyawan 1',
@@ -34,6 +35,7 @@ class UserSeeder extends Seeder
                 'tanggal_lahir' => '2002-07-01',
                 'photo' => '',
                 'level' => 'karyawan',
+                'jabatan' => 'Manager'
             ],
             [
                 'nama' => 'Karyawan 2',
@@ -43,6 +45,7 @@ class UserSeeder extends Seeder
                 'tanggal_lahir' => '2002-07-01',
                 'photo' => '',
                 'level' => 'karyawan',
+                'jabatan' => 'IT Support'
             ],
             [
                 'nama' => 'Karyawan 3',
@@ -52,6 +55,7 @@ class UserSeeder extends Seeder
                 'tanggal_lahir' => '2002-07-01',
                 'photo' => '',
                 'level' => 'karyawan',
+                'jabatan' => 'IT Support'
             ]
         ];
         

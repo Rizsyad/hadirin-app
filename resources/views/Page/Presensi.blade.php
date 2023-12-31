@@ -112,9 +112,6 @@
                     <div class="my-2">
                         <p class="text-gray-400">Keterangan</p>
                         <span class="font-bold" id="kategori"></span>
-                        {{-- <span class="font-bold text-red-500">Terlambat</span>
-                        <span class="font-bold text-green-500">Tepat Waktu</span>
-                        <span class="font-bold text-yellow-500">Izin / Cuti</span> --}}
                     </div>
                 </div>
             </div>
@@ -161,13 +158,12 @@
                 var lokasi = $(this).data('lokasi')
                 var status = $(this).data('status')
 
-                var maps = ['jamdatang', 'jampulang', 'tanggalabsen', 'kategori', 'lokasi', 'status'];
-
                 // remove all class
                 $("#keterangan").removeClass("text-red-500");
                 $("#keterangan").removeClass("text-yellow-500");
                 $("#keterangan").removeClass("text-green-500");
 
+                var maps = ['jamdatang', 'jampulang', 'tanggalabsen', 'kategori', 'lokasi', 'status'];
                 maps.map(function(key) {
                     $(`#${key}`).html(eval(key));
                     $(`#${key}`).removeClass('text-red-500');

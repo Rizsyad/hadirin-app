@@ -2,39 +2,87 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Absen;
 use App\Models\Setting;
+use Carbon\Carbon;
+
+
+use Session;
 
 class ViewController extends Controller
 {
     public function home()
     {
-        $hadir = Absen::where('status', '=', 'Hadir')->count();
-        $tidak = Absen::where('status', '=', 'Tidak Hadir')->count();
+        $setting = Setting::first();
+        $maxJamMasuk = $setting->max_jam_masuk;
+        $jamSekarang = date('H:i:s');
 
-        $izin = Absen::where('kategori', '=', 'Izin')->count();
-        $cuti = Absen::where('kategori', '=', 'Cuti')->count();
+        if($jamSekarang >= $maxJamMasuk) {
+            $cekAbsen = Absen::where([
+                'tanggal_absen' => date('Y-m-d'),
+                'user_id' => Session::get('id'),
+            ])->exists();
+            
+            if(!$cekAbsen) {
+                Absen::create([
+                    'user_id' => Session::get('id'),
+                    'Kategori' => 'Terlambat',
+                    'status' => 'Tidak Hadir',
+                    'tanggal_absen' => date('Y-m-d')
+                ]);
+            }
+        }
+
+        $hadir = Absen::where([
+            'status' => 'Hadir',
+            'user_id' => Session::get('id')
+        ])
+        ->whereYear('tanggal_absen', date('Y'))
+        ->count();
+
+        $tidak = Absen::where([
+            'status' => 'Tidak Hadir',
+            'user_id' => Session::get('id')
+        ])
+        ->whereNotIn('kategori', ['Izin', 'Cuti'])
+        ->whereYear('tanggal_absen', date('Y'))
+        ->count();
+
+        $izinOrCuti = Absen::where('user_id', Session::get('id'))
+        ->whereIn('kategori', ['Izin', 'Cuti'])
+        ->whereYear('tanggal_absen', date('Y'))
+        ->count();
 
         return view('Page.Home', [
             "hadir" => $hadir,
-            "izin" => $izin + $cuti,
-            "tidak" => $tidak - ($izin + $cuti)
+            "izin" => $izinOrCuti,
+            "tidak" => $tidak
         ]);
     }
 
     public function presensi()
     {
+        $startDate = Carbon::now()->startOfMonth();
+        $endDate = Carbon::now()->endOfMonth();
+        
+        $data = Absen::where('user_id', Session::get('id'))
+        ->whereBetween(DB::raw('DATE(tanggal_absen)'), [$startDate->toDateString(), $endDate->toDateString()])
+        ->get();
+        
         $records = [];
 
-        for ($day = 1; $day <= 31; $day++) {
-            $date = sprintf('%d-%d-%d', date('Y'), date('m'), $day);
-            $record = Absen::where('tanggal_absen', $date)->first();
-            
+        // Loop through each day of the month
+        for ($currentDate = $startDate->copy(); $currentDate->lessThanOrEqualTo($endDate); $currentDate->addDay()) {
+            $record = $data->first(function ($record) use ($currentDate) {
+                return Carbon::parse($record->tanggal_absen)->toDateString() == $currentDate->toDateString();
+            });
+
             $records[] = (object) [
-                'tanggal_absen' => $date,
-                'jam_datang' => $record ? ($record->jam_datang ? $record->jam_datang : '-' ) : '-',
-                'jam_pulang' => $record ? ($record->jam_pulang ? $record->jam_pulang : '-' )  : '-',
+                'tanggal_absen' => $currentDate->toDateString(),
+                'jam_datang' => $record ? ($record->jam_datang ?: '-') : '-',
+                'jam_pulang' => $record ? ($record->jam_pulang ?: '-') : '-',
                 'kategori' => $record ? $record->kategori : '',
                 'status' => $record ? $record->status : '',
                 'lokasi' => $record ? $record->lokasi : '-',

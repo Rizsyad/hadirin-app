@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('password', 150);
             $table->date('tanggal_lahir');
-            $table->text('photo');
+            $table->text('photo')->nullable();
+            $table->enum('jabatan', ["Manager","CEO","IT Support"]);
             $table->enum('level', ["admin","karyawan"]);
             $table->timestamps();
         });

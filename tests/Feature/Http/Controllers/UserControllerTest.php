@@ -66,6 +66,7 @@ class UserControllerTest extends TestCase
         $password = $this->faker->password;
         $tanggal_lahir = $this->faker->date();
         $photo = $this->faker->text;
+        $jabatan = $this->faker->randomElement(/** enum_attributes **/);
         $level = $this->faker->randomElement(/** enum_attributes **/);
 
         $response = $this->post(route('user.store'), [
@@ -75,6 +76,7 @@ class UserControllerTest extends TestCase
             'password' => $password,
             'tanggal_lahir' => $tanggal_lahir,
             'photo' => $photo,
+            'jabatan' => $jabatan,
             'level' => $level,
         ]);
 
@@ -85,6 +87,7 @@ class UserControllerTest extends TestCase
             ->where('password', $password)
             ->where('tanggal_lahir', $tanggal_lahir)
             ->where('photo', $photo)
+            ->where('jabatan', $jabatan)
             ->where('level', $level)
             ->get();
         $this->assertCount(1, $users);
@@ -149,6 +152,7 @@ class UserControllerTest extends TestCase
         $password = $this->faker->password;
         $tanggal_lahir = $this->faker->date();
         $photo = $this->faker->text;
+        $jabatan = $this->faker->randomElement(/** enum_attributes **/);
         $level = $this->faker->randomElement(/** enum_attributes **/);
 
         $response = $this->put(route('user.update', $user), [
@@ -158,6 +162,7 @@ class UserControllerTest extends TestCase
             'password' => $password,
             'tanggal_lahir' => $tanggal_lahir,
             'photo' => $photo,
+            'jabatan' => $jabatan,
             'level' => $level,
         ]);
 
@@ -172,6 +177,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals($password, $user->password);
         $this->assertEquals(Carbon::parse($tanggal_lahir), $user->tanggal_lahir);
         $this->assertEquals($photo, $user->photo);
+        $this->assertEquals($jabatan, $user->jabatan);
         $this->assertEquals($level, $user->level);
     }
 

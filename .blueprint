@@ -9,11 +9,11 @@ created:
     - database/factories/SuratizinFactory.php
     - database/factories/SuratcutiFactory.php
     - database/factories/SettingFactory.php
-    - database/migrations/2023_12_24_224300_create_users_table.php
-    - database/migrations/2023_12_24_224301_create_absens_table.php
-    - database/migrations/2023_12_24_224302_create_suratizins_table.php
-    - database/migrations/2023_12_24_224303_create_suratcutis_table.php
-    - database/migrations/2023_12_24_224304_create_settings_table.php
+    - database/migrations/2023_12_26_141104_create_users_table.php
+    - database/migrations/2023_12_26_141105_create_absens_table.php
+    - database/migrations/2023_12_26_141106_create_suratizins_table.php
+    - database/migrations/2023_12_26_141107_create_suratcutis_table.php
+    - database/migrations/2023_12_26_141108_create_settings_table.php
     - app/Models/User.php
     - app/Models/Absen.php
     - app/Models/Suratizin.php
@@ -42,7 +42,7 @@ created:
 updated:
     - routes/web.php
 models:
-    User: { nip: 'string:6', nama: 'string:100', email: 'string:100', password: 'string:150', tanggal_lahir: date, photo: text, level: 'enum:admin,karyawan' }
+    User: { nip: 'string:6', nama: 'string:100', email: 'string:100', password: 'string:150', tanggal_lahir: date, photo: text, jabatan: 'enum:Manager,CEO,"IT Support"', level: 'enum:admin,karyawan' }
     Absen: { lat: 'decimal:8,6 nullable', long: 'decimal:9,6 nullable', lokasi: 'text nullable', jam_datang: 'time nullable', jam_pulang: 'time nullable', tanggal_absen: date, kategori: 'enum:Terlambat,"Tepat Waktu",Izin,Cuti', status: 'enum:Hadir,"Tidak Hadir"', user_id: foreign }
     Suratizin: { keterangan: text, keterangan_admin: 'text nullable', file_izin: text, tanggal_izin: date, status: 'enum:Pending,Terima,Tolak', user_id: foreign }
     Suratcuti: { keterangan: text, keterangan_admin: 'text nullable', tanggal_awal: date, tanggal_akhir: date, status: 'enum:Pending,Terima,Tolak', user_id: foreign }

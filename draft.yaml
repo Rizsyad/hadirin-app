@@ -5,7 +5,8 @@ models:
     email: string:100
     password: string:150
     tanggal_lahir: date
-    photo: text
+    photo: text nullable
+    jabatan: enum:Manager,CEO,"IT Support"
     level: enum:admin,karyawan
   Absen:
     lat: decimal:8,6 nullable

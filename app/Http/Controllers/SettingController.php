@@ -14,9 +14,10 @@ class SettingController extends Controller
      */
     public function index(Request $request)
     {
-        $settings = Setting::all();
+        $settings = Setting::first();
+        $title = "Setting";
 
-        return view('setting.index', compact('settings'));
+        return view('setting.index', compact('settings', 'title'));
     }
 
     /**
@@ -28,8 +29,8 @@ class SettingController extends Controller
     {
         $setting->update($request->validated());
 
-        $request->session()->flash('setting.id', $setting->id);
+        $request->session()->flash('success', 'Setting berhasil diupdate');
 
-        return redirect()->route('setting.index');
+        return redirect()->route('admin.setting.index');
     }
 }
