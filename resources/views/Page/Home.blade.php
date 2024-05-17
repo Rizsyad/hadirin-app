@@ -10,7 +10,7 @@
             <img class="h-14" src="{{ asset('assets/image/logo.png') }}" />
         </div>
         <div class="flex-none mt-6 landscape:mt-3">
-            <h2 class="mt-2 landscape:mt-0 font-bold text-sm md:text-base lg:text-lg landscape:text-lg">Selamat Datang, Nama!</h2>
+            <h2 class="mt-2 landscape:mt-0 font-bold text-sm md:text-base lg:text-lg landscape:text-lg">Selamat Datang, {{Session::get('nama')}}!</h2>
             <p class="italic text-muted text-xs landscape:text-base">'Waktu adalah uang, Selamat bekerja'</p>
         </div>
         <div class="grow">

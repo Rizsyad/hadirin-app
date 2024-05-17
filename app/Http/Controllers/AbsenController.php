@@ -30,7 +30,7 @@ class AbsenController extends Controller
         ->get();
 
         $settings = Setting::first();
-        $title= 'Histori Absen';
+        $title = 'Histori Absen';
 
         return view('absen.index', compact('absens', 'settings', 'title'));
     }

@@ -22,19 +22,19 @@
                     <div class="my-4">
                         <label class="text-white" for="keterangan">Keterangan</label>
                         <textarea id="keterangan" name="keterangan"
-                            class= "block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Keterangan"></textarea>
                     </div>
                     <div class="mb-4">
                         <label class="text-white" for="dateawal">Tangga Awal</label>
                         <input type="date" name="dateawal" id="dateawal"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Tanggal" />
                     </div>
                     <div class="mb-44">
                         <label class="text-white" for="dateakhir">Tanggal Akhir</label>
                         <input type="date" name="dateakhir" id="dateakhir"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Tanggal" />
                     </div>
                 </form>
@@ -50,7 +50,7 @@
 @endsection
 
 @section('javascript')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $("#submit").click(function() {
@@ -64,7 +64,7 @@
                         $("#content > main > div").removeClass("h-[26rem]");
                         $("#content > main > div").addClass("h-80");
 
-                        return Swal.fire(data.title, data.message, data.status).then(() =>
+                        return swal(data.title, data.message, data.status).then(() =>
                             window.location = "{{ route('mobile.views.cekstatus') }}");
                     },
                     error: function(response) {

@@ -98,7 +98,5 @@ class UserController extends Controller
             'success' => true,
             'message' => 'Data Karyawan Berhasil Dihapus!.',
         ]); 
-
-        // return redirect()->route('admin.user.index');
     }
 }

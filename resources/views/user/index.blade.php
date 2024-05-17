@@ -70,7 +70,7 @@ $(document).ready(function(){
 
         $.ajax({
             url,
-            method: "DELETE",
+            method: "POST",
             success: function() {
                 Swal.fire('Berhasil!', 'Karywan Berhasil dihapus', 'success').then(() => window.location.reload());
             }

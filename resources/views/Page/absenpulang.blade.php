@@ -27,7 +27,7 @@
 
 @section('javascript')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(async () => {
@@ -36,7 +36,7 @@
             {
                 var data = await $.get("{{route('mobile.api.cekabsenpulang')}}");
                 if(data) {
-                    return Swal.fire(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
+                    return swal(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
                 }
             }
 
@@ -49,33 +49,24 @@
             var hasPermission = permissionStatus?.state // Dynamic value
 
             if (hasPermission == "denied") {
-                Swal.fire('Geolocation denied', 'Location must be enabled.', 'error')
-                return;
+                return swal('Geolocation denied', 'Location must be enabled.', 'error').then(() => window.location = "{{route('mobile.views.home')}}");
             }
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPosition);
             } else {
-                Swal.fire('Geolocation denied', 'Geolocation is not supported by this browser.', 'error')
+                return swal('Geolocation denied', 'Geolocation is not supported by this browser.', 'error').then(() => window.location = "{{route('mobile.views.home')}}");
             }
 
             var codinate = [{{$setting->lat}}, {{$setting->long}}];
             var map = L.map('map').setView(codinate, 17);
-            L.circle(codinate, 140).addTo(map);
+            L.circle(codinate, {{$setting->radius}}).addTo(map);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
             async function setPosition(position) {
                 //  lokasi yang akurat
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
-
-                // diluar -> depan bl mungkin
-                // var latitude = -6.2359007; 
-                // var longitude = 106.7472317;
-
-                // didalam
-                // var latitude = -6.2357007; 
-                // var longitude = 106.7472317;
                 
                 // get nama lokasi dari coodinat yang diberikan
                 var nominatim = await $.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
@@ -90,8 +81,8 @@
                 var distance = BLLocation.distanceTo(myLocation);
 
                 // Compare the distance with the radius (140 meters in this case) berada dalam jangkauan
-                if (distance >= 140) {
-                  Swal.fire('Oooops...', 'Anda berada di luar radius lokasi', 'error');
+                if (distance >= {{$setting->radius}}) {
+                  swal('Oooops...', 'Anda berada di luar radius lokasi', 'error');
                   $("#konfbutton").hide();
                   $("#content > footer > div > p").addClass('mt-10');
                 } else {
@@ -105,7 +96,7 @@
                     url: "{{route('mobile.api.absenpulang')}}",
                     type: "POST",
                     success: function(data) {
-                        return Swal.fire(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
+                        return swal(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
                     }
                 })
             });

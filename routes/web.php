@@ -75,7 +75,9 @@ Route::name('admin.')->prefix('admin')->group(function(){
     Route::middleware('isLoginAdmin')->group(function(){
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         
-        Route::resource('user', App\Http\Controllers\UserController::class)->except('show');
+        Route::post('/user/{user}', [App\Http\Controllers\UserController::class, 'destroy'])->name('user.destroy');
+
+        Route::resource('user', App\Http\Controllers\UserController::class)->except('show', 'destroy');
 
         Route::resource('setting', App\Http\Controllers\SettingController::class)->only('index', 'update');
 

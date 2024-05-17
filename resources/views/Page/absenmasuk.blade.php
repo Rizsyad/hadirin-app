@@ -30,7 +30,7 @@
 
 @section('javascript')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(async () => {
@@ -39,7 +39,7 @@
             {
                 var data = await $.get("{{route('mobile.api.cekabsenmasuk')}}");
                 if(data) {
-                    return Swal.fire(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
+                    return swal(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
                 }
             }
 
@@ -51,14 +51,13 @@
             var hasPermission = permissionStatus?.state // Dynamic value
 
             if (hasPermission == "denied") {
-                Swal.fire('Geolocation denied', 'Location must be enabled.', 'error')
-                return;
+                return swal('Geolocation denied', 'Location must be enabled.', 'error').then(() => window.location = "{{route('mobile.views.home')}}");
             }
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(setPosition);
             } else {
-                Swal.fire('Geolocation denied', 'Geolocation is not supported by this browser.', 'error')
+                return swal('Geolocation denied', 'Geolocation is not supported by this browser.', 'error').then(() => window.location = "{{route('mobile.views.home')}}");
             }
 
             var codinate = [{{$setting->lat}}, {{$setting->long}}];
@@ -70,14 +69,6 @@
                 //  lokasi yang akurat
                 var latitude = position.coords.latitude;
                 var longitude = position.coords.longitude;
-
-                // diluar -> depan bl mungkin
-                // var latitude = -6.2359007; 
-                // var longitude = 106.7472317;
-
-                // didalam
-                // var latitude = -6.2357007; 
-                // var longitude = 106.7472317;
 
                 $("#lat").val(latitude);
                 $("#long").val(longitude);
@@ -98,7 +89,7 @@
 
                 // Compare the distance with the radius (140 meters in this case) berada dalam jangkauan
                 if (distance >= {{$setting->radius}}) {
-                  Swal.fire('Oooops...', 'Anda berada di luar radius lokasi', 'error');
+                  swal('Oooops...', 'Anda berada di luar radius lokasi', 'error');
                   $("#konfbutton").hide();
                   $("#content > footer > div > p").addClass('mt-10');
                 } else {
@@ -117,7 +108,7 @@
                     type: "POST",
                     data: {latitude, longitude, lokasi},
                     success: function(data) {
-                        return Swal.fire(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
+                        return swal(data.title, data.message, data.status).then(() => window.location = "{{route('mobile.views.home')}}");
                     }
                 })
             });

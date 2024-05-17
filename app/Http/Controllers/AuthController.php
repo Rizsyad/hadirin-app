@@ -52,6 +52,7 @@ class AuthController extends Controller
         Session::put('isLogin', true);
         Session::put('id', $checUser->id);
         Session::put('level', $checUser->level);
+        Session::put('nama', $checUser->nama);
 
         return ['status' => "success"];
     }

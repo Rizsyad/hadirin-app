@@ -17,11 +17,11 @@
          <form id="form">
             <div class="mb-4">
                <label for="email">Email</label>
-               <input type="text" name="email" id="email" class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Masukan email atau NIP" />
+               <input type="text" name="email" id="email" class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Masukan email atau NIP" />
             </div>
             <div class="mb-4">
                <label for="password">Password</label>
-               <input type="password" name="password" id="password" class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Masukan Password" />
+               <input type="password" name="password" id="password" class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0" placeholder="Masukan Password" />
             </div>
          </form>
          {{-- <a href="#" class="text-sm">Lupa Password ?</a> --}}
@@ -32,7 +32,7 @@
 @endsection
 
 @section('javascript')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -41,7 +41,7 @@ $(document).ready(function(){
       var password = $("#password").val();
 
       if(email.trim() == "" || password.trim() == "") {
-         return Swal.fire('Kesalahan!', 'Email dan password tidak boleh kosong!', 'error');
+         return swal('Kesalahan!', 'Email dan password tidak boleh kosong!', 'error');
       }
 
       var form = $("#form").serialize();
@@ -51,7 +51,7 @@ $(document).ready(function(){
          data: form,
          success: function(data) {
             if(data.status == 'error') {
-               return Swal.fire(data.title, data.message, data.status);
+               return swal(data.title, data.message, data.status);
             }
             window.location = '/views/home';
          }

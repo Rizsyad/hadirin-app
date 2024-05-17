@@ -77,12 +77,8 @@
             <div id="bodyOverlay" class="bg-white p-4 rounded-md w-full">
 
                 <div class="flex flex-row border-b-2 border-black">
-                    <p class="flex-auto font-bold">{{ \Carbon\Carbon::now()->addDays()->isoFormat('dddd, D MMMM Y') }}</p>
+                    <p class="flex-auto font-bold" id="tanggalabsen"></p>
                     <span class="font-bold flex-none mb-2" id="status"></span>
-                    {{-- <span class="font-bold" id="keterangan"></span> --}}
-                    {{-- <span class="font-bold text-red-500">Terlambat</span>
-                    <span class="font-bold text-green-500">Tepat Waktu</span>
-                    <span class="font-bold text-yellow-500">Izin / Cuti</span> --}}
                 </div>
 
                 <div class="grid grid-cols-2 border-b-2 border-black">

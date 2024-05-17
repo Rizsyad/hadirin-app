@@ -22,7 +22,7 @@
                     <div class="mb-4">
                         <label class="text-white" for="keterangan">Keterangan</label>
                         <textarea
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             name="keterangan" id="keterangan" rows="3"></textarea>
                     </div>
                     <div class="mb-4">
@@ -32,7 +32,7 @@
                     <div class="mb-44">
                         <label class="text-white" for="date">Tanggal Izin</label>
                         <input type="date" name="date" id="date"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Tanggal" />
                     </div>
                 </form>
@@ -47,7 +47,7 @@
 @endsection
 
 @section('javascript')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $("#submit").click(function() {
@@ -63,10 +63,10 @@
                     success: function(data) {
                         $("#errorMsg").hide();
                         if (data.status == "success") {
-                            return Swal.fire(data.title, data.message, data.status).then(() =>
+                            return swal(data.title, data.message, data.status).then(() =>
                                 window.location = "{{ route('mobile.views.cekstatus') }}");
                         }
-                        Swal.fire(data.title, data.message, data.status);
+                        swal(data.title, data.message, data.status);
 
                     },
                     error: function(response) {

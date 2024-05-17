@@ -21,25 +21,25 @@
                     <div class="mb-4">
                         <label for="nama">Name</label>
                         <input type="text" name="nama" id="nama"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Nama Anda" />
                     </div>
                     <div class="mb-4">
                         <label for="email">Email</label>
                         <input type="text" name="email" id="email"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan email atau NIP" />
                     </div>
                     <div class="mb-4">
                         <label for="password">Password</label>
                         <input type="password" name="password" id="password"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Password" />
                     </div>
                     <div class="mb-4">
                         <label for="date">Date of Birth</label>
                         <input type="date" name="date" id="date"
-                            class="block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+                            class="p-2.5 block mt-1 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
                             placeholder="Masukan Tanggal" />
                     </div>
                     <div class="mb-4">
@@ -56,7 +56,7 @@
 @endsection
 
 @section('javascript')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
     <script type="text/javascript">
@@ -93,14 +93,13 @@
             showProfile();
 
             $("#save").click(function() {
-                Swal.fire({
-                    title: "Apakah Anda ingin menyimpan perubahan?",
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: "Simpan",
-                    denyButtonText: `Jangan Simpan`
+                swal({
+                    title: "Apakah Kamu Yakin?",
+                    text: "Apakah Anda ingin menyimpan perubahan?",
+                    icon: "warning",
+                    buttons: true,
                 }).then((result) => {
-                    if (result.isConfirmed) {
+                    if (result) {
                         var form = $("#form")[0]; // Ambil elemen HTML formulir
                         var formData = new FormData(form); // Buat objek FormData
 
@@ -113,7 +112,7 @@
                             success: function(data) {
                                 showProfile();
                                 $("#errorMsg").hide();
-                                return Swal.fire(data.title, data.message, data.status)
+                                return swal(data.title, data.message, data.status)
                             },
                             error: function(response) {
                                 var errorContainer = $("#errorMsg");
@@ -133,8 +132,8 @@
                                 errorContainer.append("</ul>");
                             }
                         });
-                    } else if (result.isDenied) {
-                        Swal.fire("Perubahan tidak disimpan", "", "info");
+                    } else {
+                        swal("Perubahan tidak disimpan", "", "info");
                         showProfile();
                     }
                 });
